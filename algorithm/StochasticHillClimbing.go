@@ -14,14 +14,7 @@ func StochasticHC() {
     magic_cube := CreateCube()
     
     fmt.Println("State awal kubus :")
-    fmt.Println("XZ : ")
     ShowMatrixXZ(magic_cube)
-    fmt.Println("ZX : ")
-    ShowMatrixZX(magic_cube)
-    fmt.Println("YZ : ")
-    ShowMatrixYZ(magic_cube)
-    fmt.Println("XY : ")
-    ShowMatrixXY(magic_cube)
     
     start_time := time.Now()
 	for i:=0; i<MAX_ITERATION; i++ {
@@ -48,24 +41,14 @@ func StochasticHC() {
 		}
         final_objective_value = EvaluateX(&magic_cube)+EvaluateY(&magic_cube)+EvaluateZ(&magic_cube)
         objective_value_list[i] = final_objective_value
-        if final_objective_value==0 {
-            break
-        }
 	}
     duration := time.Since(start_time)
 
     // print
     fmt.Println("State akhir kubus :")
-    fmt.Println("XZ : ")
     ShowMatrixXZ(magic_cube)
-    fmt.Println("ZX : ")
-    ShowMatrixZX(magic_cube)
-    fmt.Println("YZ : ")
-    ShowMatrixYZ(magic_cube)
-    fmt.Println("XY : ")
-    ShowMatrixXY(magic_cube)
     
-    fmt.Println("Maksimal iterasi :", MAX_ITERATION)
+    fmt.Println("Maksimum iterasi :", MAX_ITERATION)
     fmt.Println("Nilai fungsi objektif terakhir:", final_objective_value)
     fmt.Println("Waktu eksekusi:", duration)
 
