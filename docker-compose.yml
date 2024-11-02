@@ -1,0 +1,15 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  golang_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: golang_app
+    ports:
+      - "8080:8080"  # Expose port if your Go app uses a port (e.g., HTTP server)
+    environment:
+      - ENV=production
+    volumes:
+      - .:/app
