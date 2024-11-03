@@ -27,7 +27,7 @@ func CreateCube() [][][]int {
 		}
 	}
 
-	fmt.Println(matrix)
+	// fmt.Println(matrix)
 
 	return matrix
 }
@@ -104,7 +104,7 @@ func EvaluateX(matrix *[][][]int) int {
 				// print matrix
 				sum += (*matrix)[k][i][j]
 			}
-			fmt.Println(sum)
+			// fmt.Println(sum)
 			if !CheckMagic(sum) {
 				non_magic++
 			}
@@ -124,7 +124,7 @@ func EvaluateY(matrix *[][][]int) int {
 			for k := MATRIX_N - 1; k >= 0; k-- {
 				sum += (*matrix)[j][k][i]
 			}
-			fmt.Println(sum)
+			// fmt.Println(sum)
 			if !CheckMagic(sum) {
 				non_magic++
 			}
@@ -146,7 +146,7 @@ func EvaluateZ(matrix *[][][]int) int {
 				// print matrix
 				sum += (*matrix)[i][j][k]
 			}
-			fmt.Println(sum)
+			// fmt.Println(sum)
 			if !CheckMagic(sum) {
 				non_magic++
 			}
