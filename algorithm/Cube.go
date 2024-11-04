@@ -290,5 +290,11 @@ func Swap(matrix *[][][]int, x1, y1, z1, x2, y2, z2 int) {
 }
 
 func SwapStraightRandom(matrix *[]int) {
+	point1 := rand.Intn(len(*matrix))
+	point2 := rand.Intn(len(*matrix))
+
+	temp := (*matrix)[point1]
+	(*matrix)[point1] = (*matrix)[point2]
+	(*matrix)[point2] = temp
 
 }

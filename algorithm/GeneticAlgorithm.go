@@ -8,6 +8,8 @@ import (
 func GeneticAlgorithm(populasi int, iterasi int) {
 	fmt.Println("dari GA")
 
+	highestFitness := 0
+	var bestCube [][][]int
 	kubusMagik := false
 	indeksKubusMagik := -1
 
@@ -31,6 +33,10 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		for temp := 0; temp < populasi; temp++ {
 			// fmt.Println("CUBESARRAY", cubesArray[temp])
 			fitnessValue[temp] = 109 - EvaluateObjectiveFunction(&cubesArray[temp])
+			if fitnessValue[temp] > highestFitness {
+				highestFitness = fitnessValue[temp]
+				bestCube = cubesArray[temp]
+			}
 			if fitnessValue[temp] == MAGIC_VALUE {
 				kubusMagik = true
 				indeksKubusMagik = temp
@@ -46,7 +52,7 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		for temp := 0; temp < populasi; temp++ {
 			bagi := float64(fitnessValue[temp]) / float64(totalFitness)
 			// fmt.Println("BAGI", bagi)
-			fmt.Println(fitnessValue[temp])
+			// fmt.Println(fitnessValue[temp])
 			// fmt.Println("totalftness", totalFitness)
 			totalPersen += float64(bagi)
 			roulette[temp] = totalPersen
@@ -90,6 +96,12 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 
 				// fmt.Println("Child1", child1)
 
+				// mutasi dilakukan pada kedua child
+				// for swap := 0; swap < 20; swap++ {
+				SwapStraightRandom(&child1)
+				SwapStraightRandom(&child2)
+				// }
+
 				// balikin jadi cube kotak
 				cubesArray[j] = CubedCube(child1)
 				if !ganjil { // jika ganjil ga ush tambahin anak ke-2
@@ -100,12 +112,14 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 
 	}
 	if kubusMagik {
-		print("ditemukan kubus magik")
+		print("ditemukan kubus magik\n")
 		print(indeksKubusMagik)
+		fmt.Println(bestCube)
 	} else {
-		print("tidak ditemukan kubus magik")
+		print("tidak ditemukan kubus magik\n")
+		fmt.Println(bestCube)
 	}
-
+	fmt.Println("Highest Fitness : ", highestFitness)
 }
 
 // terima straightedCube terus balikin tuple 2 biji child

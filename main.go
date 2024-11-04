@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("Vanson")
 
-	algorithm.GeneticAlgorithm(5, 20)
+	algorithm.GeneticAlgorithm(100000, 20)
 
 	// edbert
 	// m := algorithm.CreateCube()
