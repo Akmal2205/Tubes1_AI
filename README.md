@@ -7,24 +7,35 @@ Program ini mencoba menemukan susunan angka di dalam kubus ajaib (3D matrix) yan
 ## Requirements
 - Docker
 
-## Cara Menjalankan Program
-1. Pastikan Java sudah terpasang di perangkat anda. Status pemasangan dapat diperiksa dengan menjalankan *command* `java --version` pada *command prompt*.
-2. *Clone repository* dengan *command* berikut
+## Menjalankan Program
+1. Aktifkan Docker yang sudah terpasang di perangkat anda.
+2. Pada terminal, lakukan *clone repository* dengan *command* berikut.
 ```
-git clone https://github.com/fabianradenta/Tucil3_13522105.git
+git clone https://github.com/Akmal2205/Tubes1_AI.git
 ``` 
-3. Masuk ke *directory* src. Pastikan mengganti `/path/to/src` dengan *path* yang benar.
+3. Masuk ke *directory*.
 ```
-cd /path/to/src
+cd Tubes1_AI
 ```
-4. *Compile* dan *run* program dengan *command*
+4. Jalankan program dengan Docker Compose
 ```
-Javac -d ../bin/ Main.java
-Java -cp ../bin/ Main
+docker-compose up
 ```
-5. Program akan meminta masukan *start word*, *end word*, dan metode algoritma yang akan digunakan. Pastikan masukan yang diterima program benar.
-6. Jika masukan yang diterima sudah benar, program akan melakukan pencarian solusi permainan Word Ladder. Jika solusi ditemukan, program akan menampilkan *path* solusi, jumlah *node* yang telah dikunjungi, dan waktu eksekusi program. Namun, jika solusi tidak ditemukan, program akan menampilkan pesan bahwa solusi tidak ditemukan dan menampilkan waktu eksekusi program.
+5. Pada Docker Desktop, klik container dengan nama golang_app yang sedang berjalan lalu pilih opsi Exec untuk membuka terminal di dalam container tersebut.
+6. Program dapat dijalankan pada terminal tersebut dengan command
+```
+./run
+```
+atau
+```
+go run main.go
+```
 
+## Menghentikan Program
+Setelah selesai menggunakan program, Anda dapat menghentikan semua container dengan menekan `Ctrl + C` di terminal tempat `docker-compose up` dijalankan, atau dengan perintah:
+```
+docker-compose down
+```
 ## Pembagian Tugas
 | Task                          | NIM                                      |
 |-------------------------------|------------------------------------------|
@@ -34,3 +45,10 @@ Java -cp ../bin/ Main
 | Cube Class                     | 13522039                               |
 | Visualization [Bonus]          | 13522039                               |
 | Dokumentasi Laporan            | 13522039, 13522049, 13522076, 13522105 |
+
+## Author
+
+1. [Edbert Eddyson Gunawan - 13522039](github.com/WazeAzure)
+2. [Vanson Kurnialim - 13522049](github.com/VansonK)
+3. [Muhammad Syarafi Akmal - 13522076](github.com/Akmal2205)
+4. [Fabian Radenta Bangun - 13522105](github.com/fabianradenta)
