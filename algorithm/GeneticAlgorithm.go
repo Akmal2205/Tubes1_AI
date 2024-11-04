@@ -3,13 +3,19 @@ package algorithm
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func GeneticAlgorithm(populasi int, iterasi int) {
+	start := time.Now()
+
 	fmt.Println("dari GA")
 
 	highestFitness := 0
 	var bestCube [][][]int
+	var stateAwal [][][]int
+	fitnessArrayAvg := make([]float64, iterasi)
+	fitnessArrayBest := make([]int, iterasi)
 	kubusMagik := false
 	indeksKubusMagik := -1
 
@@ -18,6 +24,9 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 	cubesArray := make([][][][]int, populasi)
 	for i := 0; i < populasi; i++ {
 		cubesArray[i] = CreateCube()
+		if i == 0 {
+			stateAwal = cubesArray[i]
+		}
 		// println("cubes", i)
 		// fmt.Println(cubesArray[i])
 	}
@@ -30,12 +39,20 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		// Ngisi fitness value untuk tiap cube
 		totalFitness := 0
 		fitnessValue := make([]int, populasi)
+		fitnessAvg := 0.0
+		fitnessLocalBest := 0
 		for temp := 0; temp < populasi; temp++ {
 			// fmt.Println("CUBESARRAY", cubesArray[temp])
 			fitnessValue[temp] = 109 - EvaluateObjectiveFunction(&cubesArray[temp])
+			fitnessAvg += float64(fitnessValue[temp])
+			// cek fitness value terbagus global
 			if fitnessValue[temp] > highestFitness {
 				highestFitness = fitnessValue[temp]
 				bestCube = cubesArray[temp]
+			}
+			// cek fitness value terbagus lokal
+			if fitnessValue[temp] > fitnessLocalBest {
+				fitnessLocalBest = fitnessValue[temp]
 			}
 			if fitnessValue[temp] == MAGIC_VALUE {
 				kubusMagik = true
@@ -45,6 +62,10 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 			// println(fitnessValue[temp])
 			totalFitness += fitnessValue[temp]
 		}
+
+		fitnessArrayBest[i] = fitnessLocalBest
+		fitnessAvg = fitnessAvg / float64(populasi)
+		fitnessArrayAvg[i] = fitnessAvg
 
 		//bikin roulette wheel selection
 		roulette := make([]float64, populasi)
@@ -117,9 +138,20 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		fmt.Println(bestCube)
 	} else {
 		print("tidak ditemukan kubus magik\n")
+		fmt.Println("STATE AWAL")
+		fmt.Println(stateAwal)
+		fmt.Println("BEST CUBE")
 		fmt.Println(bestCube)
 	}
 	fmt.Println("Highest Fitness : ", highestFitness)
+	duration := time.Since(start)
+	fmt.Println("Time Taken : ", duration)
+	fmt.Println("Number of Iteration : ", iterasi)
+	fmt.Println("Array of maximum fitness per iteration : ")
+	fmt.Println(fitnessArrayBest)
+	fmt.Println("Array of average fitness per iteration : ")
+	fmt.Println(fitnessArrayAvg)
+
 }
 
 // terima straightedCube terus balikin tuple 2 biji child
