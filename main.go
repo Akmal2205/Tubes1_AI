@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("Vanson")
 
-	algorithm.GeneticAlgorithm(100000, 20)
+	// algorithm.GeneticAlgorithm(100000, 20)
 
 	// edbert
 	// algorithm.StochasticHC()
@@ -25,6 +25,6 @@ func main() {
 	// algorithm.Ed2()
 	// algorithm.Ed3()
 
-	// algorithm.MainSimulatedAnnealing()
+	algorithm.MainSimulatedAnnealing()
 	// fmt.Println(algorithm.Probabilistic(1.0, 2.0))
 }

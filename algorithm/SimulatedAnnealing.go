@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"time"
 )
 
 /*
@@ -41,7 +42,11 @@ Returns:
 	none. (Procedure)
 */
 func TemperatureDecrease(T *float64, t int) {
-	*T = *T - (*T * 0.0001)
+	if *T > 1 {
+		*T = *T * 0.99
+	} else {
+		*T = *T - (5 * math.Pow(10.0, -7.0))
+	}
 }
 
 /*
@@ -56,18 +61,18 @@ Returns:
 	none. (Procedure)
 */
 func MainSimulatedAnnealing() { // main interface for the algorithm
-	// T0 := math.Pow(10.0, 202.0)
-	T0 := 200.0
+	T0 := math.Pow(10.0, 200.0)
 	t := 1
 	magic_cube := CreateCube()
 
-	fmt.Println("State awal kubus :")
+	fmt.Println("State awal kubus: ")
 	ShowMatrixXZ(magic_cube)
 
-	for T0 > 0 {
+	start_time := time.Now()
+	for T0 > 5e-324 { // minimum value represented in float64
 		TemperatureDecrease(&T0, t)
 
-		current_objective_value := EvaluateX(&magic_cube) + EvaluateY(&magic_cube) + EvaluateZ(&magic_cube)
+		current_objective_value := EvaluateObjectiveFunction(&magic_cube)
 
 		// indeks pada current magic cube yang ingin di swap
 		start_x := rand.Intn(MATRIX_N)
@@ -81,7 +86,7 @@ func MainSimulatedAnnealing() { // main interface for the algorithm
 
 		// dapetin neighbor dengan swap start dan destination
 		Swap(&magic_cube, start_x, start_y, start_z, destination_x, destination_y, destination_z)
-		neighbor_objective_value := EvaluateX(&magic_cube) + EvaluateY(&magic_cube) + EvaluateZ(&magic_cube)
+		neighbor_objective_value := EvaluateObjectiveFunction(&magic_cube)
 
 		if neighbor_objective_value == 0 {
 			fmt.Println("Ketemu cuy")
@@ -92,17 +97,25 @@ func MainSimulatedAnnealing() { // main interface for the algorithm
 		delta_E := current_objective_value - neighbor_objective_value
 
 		if delta_E <= 0 {
-			if Probabilistic(delta_E, T0) < float64(0.3) {
+			if Probabilistic(delta_E, T0) < 0.3 {
 				// kondisi tidak diambil
 				Swap(&magic_cube, destination_x, destination_y, destination_z, start_x, start_y, start_z)
-				fmt.Println("swap not taken")
 			}
 		}
-		fmt.Println("T, delta_E:", T0, delta_E)
+
+		// fmt.Println("T, delta_E:", T0, delta_E)
+		fmt.Println("T :", T0)
 		fmt.Println("p: ", Probabilistic(delta_E, T0))
 		fmt.Println("iteration:", t)
 		fmt.Println("Objective Value:", current_objective_value)
 		fmt.Println("")
 		t++
 	}
+	duration := time.Since(start_time).Minutes()
+
+	fmt.Println("time taken: ", duration, " minute(s)")
+
+	ShowMatrixXZ(magic_cube)
+	
+	fmt.Println("iterations: ", t)
 }
