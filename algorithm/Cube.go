@@ -3,7 +3,6 @@ package algorithm
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 const MAGIC_VALUE = 315
@@ -11,7 +10,6 @@ const MATRIX_N = 5
 
 // Function to initiate random cube
 func CreateCube() [][][]int {
-	rand.Seed(time.Now().UnixNano())
 
 	// Generate numbers 1 to 125
 	values := make([]int, 125)
@@ -32,8 +30,8 @@ func CreateCube() [][][]int {
 			matrix[i][j] = make([]int, MATRIX_N)
 			for k := 0; k < MATRIX_N; k++ {
 				// initialize random array
-				// matrix[i][j][k] = values[index]
-				matrix[i][j][k] = index
+				matrix[i][j][k] = values[index]
+				// matrix[i][j][k] = index
 				index++
 			}
 		}
@@ -233,7 +231,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[i][i][i]
 	}
-	fmt.Println("A to G:", sum)
+	// fmt.Println("A to G:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -243,7 +241,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[i][i][MATRIX_N-1-i]
 	}
-	fmt.Println("B to H:", sum)
+	// fmt.Println("B to H:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -253,7 +251,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[MATRIX_N-1-i][i][i]
 	}
-	fmt.Println("E to C:", sum)
+	// fmt.Println("E to C:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -263,7 +261,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[MATRIX_N-1-i][i][MATRIX_N-1-i]
 	}
-	fmt.Println("F to D:", sum)
+	// fmt.Println("F to D:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -274,6 +272,12 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 // OBJECTIVE FUNCTION = state value.
 // number of rows / col / diagonal that is not equal to magic number
 func EvaluateObjectiveFunction(matrix *[][][]int) int {
+	// fmt.Println("ISI EVALUATE", (*matrix)[0][0])
+	// fmt.Println("X", EvaluateX(matrix))
+	// fmt.Println("Y", EvaluateY(matrix))
+	// fmt.Println("Z", EvaluateZ(matrix))
+	// fmt.Println("bidang", EvaluateDiagonalBidang(matrix))
+	// fmt.Println("ruang", EvaluateDiagonalRuang(matrix))
 	return EvaluateX(matrix) + EvaluateY(matrix) + EvaluateZ(matrix) + EvaluateDiagonalBidang(matrix) + EvaluateDiagonalRuang(matrix)
 }
 
@@ -283,4 +287,8 @@ func Swap(matrix *[][][]int, x1, y1, z1, x2, y2, z2 int) {
 	var temp int = (*matrix)[x1][y1][z1]
 	(*matrix)[x1][y1][z1] = (*matrix)[x2][y2][z2]
 	(*matrix)[x2][y2][z2] = temp
+}
+
+func SwapStraightRandom(matrix *[]int) {
+
 }

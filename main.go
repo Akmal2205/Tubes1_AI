@@ -8,13 +8,13 @@ import (
 func main() {
 	fmt.Println("Vanson")
 
-	algorithm.GeneticAlgorithm(2, 1)
+	algorithm.GeneticAlgorithm(5, 20)
 
 	// edbert
-	m := algorithm.CreateCube()
-	algorithm.ShowMatrixYZ(m)
-	a := algorithm.EvaluateDiagonalBidang(&m)
-	fmt.Println(a)
+	// m := algorithm.CreateCube()
+	// algorithm.ShowMatrixYZ(m)
+	// a := algorithm.EvaluateDiagonalBidang(&m)
+	// fmt.Println(a)
 	// b := algorithm.EvaluateY(&m)
 	// fmt.Println(b)
 	// c := algorithm.EvaluateZ(&m)

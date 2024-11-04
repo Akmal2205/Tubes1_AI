@@ -16,6 +16,7 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 	cubesArray := make([][][][]int, populasi)
 	for i := 0; i < populasi; i++ {
 		cubesArray[i] = CreateCube()
+		// println("cubes", i)
 		// fmt.Println(cubesArray[i])
 	}
 
@@ -28,13 +29,14 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		totalFitness := 0
 		fitnessValue := make([]int, populasi)
 		for temp := 0; temp < populasi; temp++ {
-			fitnessValue[temp] = EvaluateX(&cubesArray[temp]) + EvaluateY(&cubesArray[temp]) + EvaluateZ(&cubesArray[temp])
-			if fitnessValue[temp] == 315 {
+			// fmt.Println("CUBESARRAY", cubesArray[temp])
+			fitnessValue[temp] = 109 - EvaluateObjectiveFunction(&cubesArray[temp])
+			if fitnessValue[temp] == MAGIC_VALUE {
 				kubusMagik = true
 				indeksKubusMagik = temp
 				break
 			}
-			println(fitnessValue[temp])
+			// println(fitnessValue[temp])
 			totalFitness += fitnessValue[temp]
 		}
 
@@ -42,7 +44,11 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		roulette := make([]float64, populasi)
 		totalPersen := 0.0
 		for temp := 0; temp < populasi; temp++ {
-			totalPersen += float64(fitnessValue[temp]) / float64(totalFitness)
+			bagi := float64(fitnessValue[temp]) / float64(totalFitness)
+			// fmt.Println("BAGI", bagi)
+			fmt.Println(fitnessValue[temp])
+			// fmt.Println("totalftness", totalFitness)
+			totalPersen += float64(bagi)
 			roulette[temp] = totalPersen
 		}
 
@@ -51,9 +57,12 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 		parentCubes := make([][][][]int, populasi)
 		for temp := 0; temp < populasi; temp++ {
 			r := rand.Float64()
+			// fmt.Println("R", r)
+			// fmt.Println(roulette)
 			for temp2 := 0; temp2 < populasi; temp2++ {
-				if r <= float64(fitnessValue[temp2]) {
+				if r <= float64(roulette[temp2]) {
 					parentCubes[temp] = cubesArray[temp2]
+					// print("PARENT CUBES", parentCubes[temp])
 					break
 				}
 			}
@@ -67,12 +76,15 @@ func GeneticAlgorithm(populasi int, iterasi int) {
 				// print("Parent 1")
 				// fmt.Println(parent1)
 				var parent2 []int
-				if ganjil { // Kalo ganjil, populasi terakhir nge-parent sama elemen sebelumnya (kedua terakhir)
+				if ganjil && j == populasi-1 { // Kalo ganjil, populasi terakhir nge-parent sama elemen sebelumnya (kedua terakhir)
 					parent2 = StraightCube(parentCubes[j-1])
 
 				} else {
 					parent2 = StraightCube(parentCubes[j+1])
 				}
+
+				// print("Parent 2")
+				// fmt.Println(parent2)
 
 				child1, child2 := pmxCrossover(parent1, parent2)
 
@@ -108,7 +120,8 @@ func pmxCrossover(parent1, parent2 []int) ([]int, []int) {
 		child2[i] = -1
 	}
 
-	fmt.Println("child1", child1)
+	// fmt.Println("child1")
+	// fmt.Println(child1)
 
 	// Randomly milih 2 titik buat rentang crossover, diset point1 lebih kecil
 	point1 := rand.Intn(length)
@@ -117,7 +130,7 @@ func pmxCrossover(parent1, parent2 []int) ([]int, []int) {
 		point1, point2 = point2, point1
 	}
 
-	println("point1, point2", point1, point2)
+	// println("point1, point2", point1, point2)
 
 	// Masang rentang crossover ke child masing2
 	for i := point1; i <= point2; i++ {
@@ -125,21 +138,23 @@ func pmxCrossover(parent1, parent2 []int) ([]int, []int) {
 		child2[i] = parent1[i]
 	}
 
-	fmt.Println("Child1", child1)
+	// fmt.Println("Child1")
+	// fmt.Println(child1)
 
 	// ngisi sisa elemen di child yang masih kosong
-	println("LEngth", length)
+	// println("LEngth", length)
 	for i := 0; i < length; i++ {
 		if i >= point1 && i <= point2 {
-			println("CONTINUE")
+			// println("CONTINUE")
 			continue
 		}
-		println(i)
+		// println(i)
 		fillValue(child1, i, parent1)
 		fillValue(child2, i, parent2)
 	}
 
-	fmt.Println("stlh fill", child1)
+	// fmt.Println("stlh fill")
+	// fmt.Println(child1)
 
 	return child1, child2
 }
