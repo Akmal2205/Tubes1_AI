@@ -6,10 +6,12 @@ import (
 )
 
 func main() {
-	fmt.Println("Edbert")
+	fmt.Println("Vanson")
+
+	algorithm.GeneticAlgorithm(5, 20)
 
 	// edbert
-	algorithm.StochasticHC()
+	// algorithm.StochasticHC()
 	// m := algorithm.CreateCube()
 	// algorithm.ShowMatrixYZ(m)
 	// a := algorithm.EvaluateDiagonalBidang(&m)

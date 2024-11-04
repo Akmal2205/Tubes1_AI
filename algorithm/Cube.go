@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"time"
 )
 
 const MAGIC_VALUE = 315
@@ -23,7 +22,6 @@ type CoordinatePair struct {
 
 // Function to initiate random cube
 func CreateCube() [][][]int {
-	rand.Seed(time.Now().UnixNano())
 
 	// Generate numbers 1 to 125
 	values := make([]int, 125)
@@ -37,20 +35,22 @@ func CreateCube() [][][]int {
 	// pola [x] [y] [z]
 	var matrix [][][]int = make([][][]int, MATRIX_N)
 	index := 0
+	// temp := 0
 	for i := 0; i < MATRIX_N; i++ {
 		matrix[i] = make([][]int, MATRIX_N)
 		for j := 0; j < MATRIX_N; j++ {
 			matrix[i][j] = make([]int, MATRIX_N)
 			for k := 0; k < MATRIX_N; k++ {
 				// initialize random array
-				// matrix[i][j][k] = values[index]
-				matrix[i][j][k] = index
+				matrix[i][j][k] = values[index]
+				// matrix[i][j][k] = index
 				index++
 			}
 		}
 	}
 
 	// fmt.Println(matrix)
+	// print("beres\n")
 
 	return matrix
 }
@@ -331,6 +331,12 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 // OBJECTIVE FUNCTION = state value.
 // number of rows / col / diagonal that is not equal to magic number
 func EvaluateObjectiveFunction(matrix *[][][]int) int {
+	// fmt.Println("ISI EVALUATE", (*matrix)[0][0])
+	// fmt.Println("X", EvaluateX(matrix))
+	// fmt.Println("Y", EvaluateY(matrix))
+	// fmt.Println("Z", EvaluateZ(matrix))
+	// fmt.Println("bidang", EvaluateDiagonalBidang(matrix))
+	// fmt.Println("ruang", EvaluateDiagonalRuang(matrix))
 	return EvaluateX(matrix) + EvaluateY(matrix) + EvaluateZ(matrix) + EvaluateDiagonalBidang(matrix) + EvaluateDiagonalRuang(matrix)
 }
 
@@ -340,4 +346,8 @@ func Swap(matrix *[][][]int, x1, y1, z1, x2, y2, z2 int) {
 	var temp int = (*matrix)[x1][y1][z1]
 	(*matrix)[x1][y1][z1] = (*matrix)[x2][y2][z2]
 	(*matrix)[x2][y2][z2] = temp
+}
+
+func SwapStraightRandom(matrix *[]int) {
+
 }
