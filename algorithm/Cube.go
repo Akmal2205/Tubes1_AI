@@ -55,6 +55,19 @@ func CreateCube() [][][]int {
 	return matrix
 }
 
+// Fungsi untuk menyalin CUBE
+func CopyCube(cube [][][]int) [][][]int {
+	copyCube := make([][][]int, len(cube))
+	for i := range cube {
+		copyCube[i] = make([][]int, len(cube[i]))
+		for j := range cube[i] {
+			copyCube[i][j] = make([]int, len(cube[i][j]))
+			copy(copyCube[i][j], cube[i][j])
+		}
+	}
+	return copyCube
+}
+
 // Function to save matrix to file
 func SaveMatrixXZ(matrix [][][]int, steps []CoordinatePair, filename string) error {
 	// Open the file for writing

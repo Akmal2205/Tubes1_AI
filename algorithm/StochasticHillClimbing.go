@@ -9,14 +9,15 @@ import (
 const MAX_ITERATION = 100
 
 var final_objective_value int
+var objective_value_list[MAX_ITERATION]int
 
 func StochasticHC() {
 	var current_objective_value, neighbor_objective_value, start_x, start_y, start_z, destination_x, destination_y, destination_z int
 	var objective_value_list [MAX_ITERATION]int
-	magic_cube := CreateCube()
+	magic_cube := CreateCube() // [][][]int
 
 	// saved initial state
-	saved_magic_cube := magic_cube
+	saved_magic_cube := CopyCube(magic_cube)
 	var saved_steps []CoordinatePair
 
 	fmt.Println("State awal kubus :")
@@ -41,33 +42,44 @@ func StochasticHC() {
 		Swap(&magic_cube, start_x, start_y, start_z, destination_x, destination_y, destination_z)
 		neighbor_objective_value = EvaluateObjectiveFunction(&magic_cube)
 
+		var cek_batal bool = false
 		if neighbor_objective_value > current_objective_value {
 			// dibalikin ke awal
-			Swap(&magic_cube, destination_x, destination_y, destination_z, start_x, start_y, start_z)
+			cek_batal = true
+			Swap(&magic_cube, start_x, start_y, start_z, destination_x, destination_y, destination_z)
+		}
+        final_objective_value = EvaluateX(&magic_cube)+EvaluateY(&magic_cube)+EvaluateZ(&magic_cube)
+        objective_value_list[i] = final_objective_value
+		if final_objective_value == 0 {
+			fmt.Println("ketemu euy gacor!!")
+			break
 		}
 
 		final_objective_value = EvaluateObjectiveFunction(&magic_cube)
 		objective_value_list[i] = final_objective_value
 
-		// SAVED DATA FOR VISUALIZATION
-		var new_data CoordinatePair
+		if !cek_batal {
+			// SAVED DATA FOR VISUALIZATION
+			var new_data CoordinatePair
 
-		var kordinat1 Coordinate3D
-		kordinat1.X = start_x
-		kordinat1.Y = start_y
-		kordinat1.Z = start_z
+			var kordinat1 Coordinate3D
+			kordinat1.X = start_x
+			kordinat1.Y = start_y
+			kordinat1.Z = start_z
 
-		var kordinat2 Coordinate3D
-		kordinat2.X = destination_x
-		kordinat2.Y = destination_y
-		kordinat2.Z = destination_z
+			var kordinat2 Coordinate3D
+			kordinat2.X = destination_x
+			kordinat2.Y = destination_y
+			kordinat2.Z = destination_z
 
-		new_data.N = final_objective_value
-		new_data.Point1 = kordinat1
-		new_data.Point2 = kordinat2
+			new_data.N = final_objective_value
+			new_data.Point1 = kordinat1
+			new_data.Point2 = kordinat2
 
-		saved_steps = append(saved_steps, new_data)
+			saved_steps = append(saved_steps, new_data)
+		}
 	}
+
 	duration := time.Since(start_time)
 
 	SaveMatrixXZ(saved_magic_cube, saved_steps, "edbert.txt")

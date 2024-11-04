@@ -51,8 +51,7 @@ class CubeReplayApp:
         file_path = filedialog.askopenfilename()
         if file_path:
             with open(file_path, 'r') as file:
-                lines = file.readlines()
-                lines = [x.strip() for x in lines if x.strip()]
+                self.original_lines = [line.strip() for line in file.readlines() if line.strip()]
 
                 # Initialize a 3D array for a 5x5x5 cube to store values from the file
                 self.cube_state = np.zeros((5, 5, 5), dtype=int)
@@ -60,12 +59,12 @@ class CubeReplayApp:
                 # Parse the file into the 3D cube array
                 for i in range(5):
                     for j in range(5):
-                        one_line = lines[5 * i + j].split(' ')
-                        for k in range(5):
-                            self.cube_state[i][j][k] = int(one_line[k])
+                        one_line = self.original_lines[4 + 5 * i - j].split(' ')
+                        for k in range(4, -1, -1):
+                            self.cube_state[k][i][j] = int(one_line[k])
 
                 # Parse steps
-                self.steps = [line.strip() for line in lines[25:]]
+                self.steps = [line.strip() for line in self.original_lines[25:]]
                 self.progress.configure(to=len(self.steps) - 1)
 
                 # Initial rendering of the entire cube
@@ -79,7 +78,7 @@ class CubeReplayApp:
         for x in range(self.cube_size):
             for y in range(self.cube_size):
                 for z in range(self.cube_size):
-                    scatter_point = self.ax.scatter(x, y, z, color="gray", s=100, edgecolor="gray")
+                    scatter_point = self.ax.scatter(x, y, z, color="none", s=100, edgecolor="gray")
                     self.plot_points[(x, y, z)] = scatter_point
                     self.ax.text(x, y, z, f"{self.cube_state[x][y][z]}", color="black", fontsize=8, ha='center')
 
@@ -104,52 +103,67 @@ class CubeReplayApp:
 
     def play(self):
         while self.is_playing and self.current_step < len(self.steps) - 1:
-            self.display_step(self.current_step)
             self.current_step += 1
-            self.progress.set(self.current_step)
+            self.seek(self.current_step)
             time.sleep(1 / self.speed)
         self.is_playing = False
         self.play_button.config(text="Play")
 
     def seek(self, position):
         self.current_step = int(float(position))
-        self.display_step(self.current_step)
+        self.replay_steps_up_to(self.current_step)
 
-    def set_speed(self, value):
-        self.speed = float(value)
+    def replay_steps_up_to(self, step_index):
+        # Reset cube state to initial
+        self.reset_cube_state()
 
-    def display_step(self, step_index):
+        # Apply all steps up to the current step_index
+        for i in range(step_index + 1):
+            self.apply_step(i)
+
+        # Update the display after applying all steps
+        self.update_annotations()
+        self.canvas.draw()
+
+    def reset_cube_state(self):
+        # Reload the initial state of the cube from the file or initial values
+        self.cube_state.fill(0)
+        for i in range(5):
+            for j in range(5):
+                one_line = self.original_lines[4 + 5 * i - j].split(' ')
+                for k in range(4, -1, -1):
+                    self.cube_state[k][i][j] = int(one_line[k])
+
+    def apply_step(self, step_index):
         if step_index < len(self.steps):
             step = self.steps[step_index]
-            # Parse each step assuming format "x1 y1 z1 x2 y2 z2 n"
             parts = step.split()
             if len(parts) == 7:
                 x1, y1, z1, x2, y2, z2, n = map(int, parts)
-
+                
                 # Update the N value label
                 self.n_value_label.config(text=f"N = {n}")
 
-                # Highlight start and end points in different colors
-                self.highlight_swap(x1, y1, z1, x2, y2, z2)
-
-                # Update the cube state by swapping values
+                # Swap values in the cube state
                 self.cube_state[x1][y1][z1], self.cube_state[x2][y2][z2] = (
                     self.cube_state[x2][y2][z2],
                     self.cube_state[x1][y1][z1],
                 )
 
-                # Update the annotations with new values
-                self.update_annotations()
-                self.canvas.draw()
+                # Temporarily highlight swapped points
+                self.highlight_swap(x1, y1, z1, x2, y2, z2)
 
     def highlight_swap(self, x1, y1, z1, x2, y2, z2):
-        # Reset all points to neutral color first
+        # Reset all points to neutral color
         for scatter in self.plot_points.values():
-            scatter.set_color("gray")
+            scatter.set_color("none")
 
         # Highlight the swapped points
         self.plot_points[(x1, y1, z1)].set_color("red")
         self.plot_points[(x2, y2, z2)].set_color("blue")
+
+    def set_speed(self, value):
+        self.speed = float(value)
 
     def update_annotations(self):
         # Remove existing text annotations

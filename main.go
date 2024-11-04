@@ -11,14 +11,7 @@ func main() {
 	algorithm.GeneticAlgorithm(100, 250)
 
 	// edbert
-	// algorithm.StochasticHC()
-	// m := algorithm.CreateCube()
-	// algorithm.ShowMatrixYZ(m)
-	// a := algorithm.EvaluateDiagonalBidang(&m)
-	// fmt.Println(a)
-	// b := algorithm.EvaluateY(&m)
-	// fmt.Println(b)
-	// c := algorithm.EvaluateZ(&m)
+	algorithm.StochasticHC()
 
 	// fmt.Println(c)
 	// algorithm.Ed1()
