@@ -63,13 +63,15 @@ Returns:
 func MainSimulatedAnnealing() { // main interface for the algorithm
 	T0 := math.Pow(10.0, 200.0)
 	t := 1
+	local_stuck := 0
+	var p_plot []float64
 	magic_cube := CreateCube()
 
 	fmt.Println("State awal kubus: ")
 	ShowMatrixXZ(magic_cube)
 
 	start_time := time.Now()
-	for T0 > 5e-324 { // minimum value represented in float64
+	for t < 10 { // minimum value represented in float64
 		TemperatureDecrease(&T0, t)
 
 		current_objective_value := EvaluateObjectiveFunction(&magic_cube)
@@ -97,25 +99,29 @@ func MainSimulatedAnnealing() { // main interface for the algorithm
 		delta_E := current_objective_value - neighbor_objective_value
 
 		if delta_E <= 0 {
-			if Probabilistic(delta_E, T0) < 0.3 {
+			p := Probabilistic(delta_E, T0)
+			p_plot = append(p_plot, p)
+			if p < 0.3 {
 				// kondisi tidak diambil
 				Swap(&magic_cube, destination_x, destination_y, destination_z, start_x, start_y, start_z)
 			}
+			local_stuck++
 		}
 
 		// fmt.Println("T, delta_E:", T0, delta_E)
-		fmt.Println("T :", T0)
-		fmt.Println("p: ", Probabilistic(delta_E, T0))
-		fmt.Println("iteration:", t)
-		fmt.Println("Objective Value:", current_objective_value)
-		fmt.Println("")
+		if(t % 1000 == 0){
+			fmt.Println("T :", T0)
+			fmt.Println("p: ", Probabilistic(delta_E, T0))
+			fmt.Println("iteration:", t)
+			fmt.Println("Objective Value:", current_objective_value)
+			fmt.Println("")
+		}
 		t++
 	}
-	duration := time.Since(start_time).Minutes()
-
-	fmt.Println("time taken: ", duration, " minute(s)")
 
 	ShowMatrixXZ(magic_cube)
-	
-	fmt.Println("iterations: ", t)
+	duration := time.Since(start_time).Minutes()
+	fmt.Println("time taken:", duration, "minute(s)")
+	fmt.Println("iterations:", t)
+	fmt.Println("Local optima frequency:", local_stuck)
 }
