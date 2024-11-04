@@ -7,10 +7,10 @@ import (
 )
 const MAX_ITERATION = 1000000
 var final_objective_value int
+var objective_value_list[MAX_ITERATION]int
 
 func StochasticHC() {
 	var current_objective_value, neighbor_objective_value, start_x,start_y, start_z, destination_x, destination_y, destination_z  int
-    var objective_value_list[MAX_ITERATION]int
     magic_cube := CreateCube()
     
     fmt.Println("State awal kubus :")
