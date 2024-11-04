@@ -13,4 +13,5 @@ func main() {
 
 	// algorithm.MainSimulatedAnnealing()
 	// fmt.Println(algorithm.Probabilistic(1.0, 2.0))
+
 }
