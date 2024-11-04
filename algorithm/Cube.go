@@ -2,6 +2,7 @@ package algorithm
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 const MAGIC_VALUE = 315
@@ -13,21 +14,22 @@ func CreateCube() [][][]int {
 
 	// pola [x] [y] [z]
 	var matrix [][][]int = make([][][]int, MATRIX_N)
-	temp := 0
+	// temp := 0
 	for i := 0; i < MATRIX_N; i++ {
 		matrix[i] = make([][]int, MATRIX_N)
 		for j := 0; j < MATRIX_N; j++ {
 			matrix[i][j] = make([]int, MATRIX_N)
 			for k := 0; k < MATRIX_N; k++ {
 				// initialize random array
-				// matrix[i][j][k] = rand.Intn(125) + 1
-				matrix[i][j][k] = temp
-				temp++
+				matrix[i][j][k] = rand.Intn(125) + 1
+				// matrix[i][j][k] = temp
+				// temp++
 			}
 		}
 	}
 
 	// fmt.Println(matrix)
+	// print("beres\n")
 
 	return matrix
 }

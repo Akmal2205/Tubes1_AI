@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Edbert")
+	fmt.Println("Vanson")
+
+	algorithm.GeneticAlgorithm(2, 1)
 
 	// edbert
 	// m := algorithm.CreateCube()
@@ -21,6 +23,6 @@ func main() {
 	// algorithm.Ed2()
 	// algorithm.Ed3()
 
-	algorithm.MainSimulatedAnnealing()
+	// algorithm.MainSimulatedAnnealing()
 	// fmt.Println(algorithm.Probabilistic(1.0, 2.0))
 }
