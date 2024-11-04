@@ -3,11 +3,23 @@ package algorithm
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
 const MAGIC_VALUE = 315
 const MATRIX_N = 5
+
+type Coordinate3D struct {
+	X, Y, Z int
+}
+
+// Define a pair of 3D coordinates
+type CoordinatePair struct {
+	Point1 Coordinate3D
+	Point2 Coordinate3D
+	N      int
+}
 
 // Function to initiate random cube
 func CreateCube() [][][]int {
@@ -41,6 +53,53 @@ func CreateCube() [][][]int {
 	// fmt.Println(matrix)
 
 	return matrix
+}
+
+// Function to save matrix to file
+func SaveMatrixXZ(matrix [][][]int, steps []CoordinatePair, filename string) error {
+	// Open the file for writing
+	file, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %v", err)
+	}
+	defer file.Close()
+
+	// Write the matrix in the XZ view to the file
+	for j := 0; j < MATRIX_N; j++ {
+		for i := MATRIX_N - 1; i >= 0; i-- {
+			for k := 0; k < MATRIX_N; k++ {
+				// Write matrix element to file
+				_, err := fmt.Fprintf(file, "%d ", matrix[k][j][i])
+				if err != nil {
+					return fmt.Errorf("failed to write to file: %v", err)
+				}
+			}
+			// Newline after each row in the XZ view
+			_, err := file.WriteString("\n")
+			if err != nil {
+				return fmt.Errorf("failed to write newline to file: %v", err)
+			}
+		}
+		// Newline to separate each slice in the XZ view
+		_, err := file.WriteString("\n")
+		if err != nil {
+			return fmt.Errorf("failed to write newline to file: %v", err)
+		}
+	}
+
+	// Write the steps as coordinate pairs in the specified format
+	for _, step := range steps {
+		_, err := fmt.Fprintf(file, "%d %d %d %d %d %d %d\n",
+			step.Point1.X, step.Point1.Y, step.Point1.Z,
+			step.Point2.X, step.Point2.Y, step.Point2.Z,
+			step.N,
+		)
+		if err != nil {
+			return fmt.Errorf("failed to write coordinate pair to file: %v", err)
+		}
+	}
+
+	return nil
 }
 
 func ShowMatrixXZ(matrix [][][]int) {
@@ -231,7 +290,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[i][i][i]
 	}
-	fmt.Println("A to G:", sum)
+	// fmt.Println("A to G:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -241,7 +300,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[i][i][MATRIX_N-1-i]
 	}
-	fmt.Println("B to H:", sum)
+	// fmt.Println("B to H:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -251,7 +310,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[MATRIX_N-1-i][i][i]
 	}
-	fmt.Println("E to C:", sum)
+	// fmt.Println("E to C:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
@@ -261,7 +320,7 @@ func EvaluateDiagonalRuang(matrix *[][][]int) int {
 	for i := 0; i < MATRIX_N; i++ {
 		sum += (*matrix)[MATRIX_N-1-i][i][MATRIX_N-1-i]
 	}
-	fmt.Println("F to D:", sum)
+	// fmt.Println("F to D:", sum)
 	if !CheckMagic(sum) {
 		non_magic++
 	}
