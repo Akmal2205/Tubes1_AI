@@ -42,6 +42,10 @@ func StochasticHC() {
 		}
         final_objective_value = EvaluateX(&magic_cube)+EvaluateY(&magic_cube)+EvaluateZ(&magic_cube)
         objective_value_list[i] = final_objective_value
+		if final_objective_value == 0 {
+			fmt.Println("ketemu euy gacor!!")
+			break
+		}
 	}
     duration := time.Since(start_time)
 
