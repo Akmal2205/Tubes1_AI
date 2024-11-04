@@ -42,8 +42,8 @@ func CreateCube() [][][]int {
 			matrix[i][j] = make([]int, MATRIX_N)
 			for k := 0; k < MATRIX_N; k++ {
 				// initialize random array
-				// matrix[i][j][k] = values[index]
-				matrix[i][j][k] = index
+				matrix[i][j][k] = values[index]
+				// matrix[i][j][k] = index
 				index++
 			}
 		}
