@@ -79,7 +79,7 @@ class CubeReplayApp:
         for x in range(self.cube_size):
             for y in range(self.cube_size):
                 for z in range(self.cube_size):
-                    scatter_point = self.ax.scatter(x, y, z, color="gray", s=100, edgecolor="gray")
+                    scatter_point = self.ax.scatter(x, y, z, color="none", s=100, edgecolor="gray")
                     self.plot_points[(x, y, z)] = scatter_point
                     self.ax.text(x, y, z, f"{self.cube_state[x][y][z]}", color="black", fontsize=8, ha='center')
 

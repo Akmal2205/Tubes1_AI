@@ -8,10 +8,10 @@ import (
 func main() {
 	fmt.Println("Vanson")
 
-	algorithm.GeneticAlgorithm(100000, 20)
+	// algorithm.GeneticAlgorithm(100000, 20)
 
 	// edbert
-	// algorithm.StochasticHC()
+	algorithm.StochasticHC()
 	// m := algorithm.CreateCube()
 	// algorithm.ShowMatrixYZ(m)
 	// a := algorithm.EvaluateDiagonalBidang(&m)

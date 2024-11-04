@@ -13,7 +13,7 @@ var final_objective_value int
 func StochasticHC() {
 	var current_objective_value, neighbor_objective_value, start_x, start_y, start_z, destination_x, destination_y, destination_z int
 	var objective_value_list [MAX_ITERATION]int
-	magic_cube := CreateCube()
+	magic_cube := CreateCube() // [][][]int
 
 	// saved initial state
 	saved_magic_cube := magic_cube
