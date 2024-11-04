@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-const MAX_ITERATION = 100
+const MAX_ITERATION = 10000000
 
 var final_objective_value int
-var objective_value_list[MAX_ITERATION]int
+var objective_value_list [MAX_ITERATION]int
 
 func StochasticHC() {
 	var current_objective_value, neighbor_objective_value, start_x, start_y, start_z, destination_x, destination_y, destination_z int
@@ -48,8 +48,8 @@ func StochasticHC() {
 			cek_batal = true
 			Swap(&magic_cube, start_x, start_y, start_z, destination_x, destination_y, destination_z)
 		}
-        final_objective_value = EvaluateX(&magic_cube)+EvaluateY(&magic_cube)+EvaluateZ(&magic_cube)
-        objective_value_list[i] = final_objective_value
+		final_objective_value = EvaluateX(&magic_cube) + EvaluateY(&magic_cube) + EvaluateZ(&magic_cube)
+		objective_value_list[i] = final_objective_value
 		if final_objective_value == 0 {
 			fmt.Println("ketemu euy gacor!!")
 			break
@@ -77,6 +77,10 @@ func StochasticHC() {
 			new_data.Point2 = kordinat2
 
 			saved_steps = append(saved_steps, new_data)
+		}
+
+		if i%50000 == 0 {
+			fmt.Println(i, final_objective_value)
 		}
 	}
 
