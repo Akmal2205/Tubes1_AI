@@ -25,6 +25,6 @@ func main() {
 	// algorithm.Ed2()
 	// algorithm.Ed3()
 
-	algorithm.MainSimulatedAnnealing()
+	// algorithm.MainSimulatedAnnealing()
 	// fmt.Println(algorithm.Probabilistic(1.0, 2.0))
 }
