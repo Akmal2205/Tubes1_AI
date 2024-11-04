@@ -30,6 +30,10 @@ atau
 ```
 go run main.go
 ```
+7. Untuk menampilkan visualisasi kubik, jalankan program `visualizer.py` dengan command berikut.
+```
+python3 visualizer.py
+```
 
 ## Menghentikan Program
 Setelah selesai menggunakan program, Anda dapat menghentikan semua container dengan menekan `Ctrl + C` di terminal tempat `docker-compose up` dijalankan, atau dengan perintah:
@@ -46,7 +50,7 @@ docker-compose down
 | Visualization [Bonus]          | 13522039                               |
 | Dokumentasi Laporan            | 13522039, 13522049, 13522076, 13522105 |
 
-## Author
+## Authors
 
 1. [Edbert Eddyson Gunawan - 13522039](github.com/WazeAzure)
 2. [Vanson Kurnialim - 13522049](github.com/VansonK)
